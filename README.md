@@ -1,2 +1,3 @@
-# object-oop-examples
-오브젝트 책 읽으면서 예제 만들어 코딩해보기
+# lets-coding
+
+코딩한거 마구잡이로 올리는 저장소
