@@ -9,5 +9,5 @@
 
 ### 파일 실행
 ```shell
-npx ts-node ./main.ts
+npx ts-node ./memo.md
 ```
