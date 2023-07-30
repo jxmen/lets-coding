@@ -24,7 +24,7 @@ public class WeatherData implements Subject {
 
 	@Override
 	public void notifyAllToObservers() {
-		this.observers.forEach(o -> o.update(temperature, humidity, temperature));
+		this.observers.forEach(Observer::update);
 	}
 
 	@Override

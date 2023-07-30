@@ -8,5 +8,6 @@ public class WeatherStation {
 
 		weatherData.registerObserver(currentDisplay);
 		weatherData.setMeasurements(80, 65, 30.4f);
+		currentDisplay.display();
 	}
 }
