@@ -21,13 +21,18 @@ class SimpleRemoteControl {
         this.slot.execute();
     }
 }
+
+// receiver
 class Light {
+
+    // action
     on() {
         console.log("조명이 켜졌습니다.");
     }
 }
 
 class LightOnCommand implements Command {
+    // reciver
     private light: Light;
 
     constructor(light: Light) {
@@ -35,7 +40,7 @@ class LightOnCommand implements Command {
     }
 
     execute(): void {
-        this.light.on();
+        this.light.on(); // receiver's action
     }
 
 }
@@ -43,11 +48,14 @@ class LightOnCommand implements Command {
 function main() {
     const simpleRemoteControl = new SimpleRemoteControl();
 
+    // receiver
     const light: Light = new Light();
-    const lightOn: LightOnCommand = new LightOnCommand(light);
+
+    // invoker
+    const lightOnCommand: LightOnCommand = new LightOnCommand(light);
 
     simpleRemoteControl.buttonWasPressed();
-    simpleRemoteControl.setCommand(lightOn);
+    simpleRemoteControl.setCommand(lightOnCommand);
     simpleRemoteControl.buttonWasPressed();
 }
 
