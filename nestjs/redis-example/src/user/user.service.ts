@@ -23,7 +23,9 @@ export class UserService {
   }
 
   async getUser(userId: number) {
-    return await this.redis.get(`user:${userId}`);
+    const user = await this.redis.get(`user:${userId}`);
+
+    return JSON.parse(user);
   }
 
   async getUsers() {
