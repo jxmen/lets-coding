@@ -11,6 +11,16 @@ export class UserService {
   }
 
   async changeUser(userId: number, request: ChangeUserRequest) {
-    await this.redis.set(`${userId}:name`, request.name);
+    await this.redis.set(
+      `user:${userId}`,
+      JSON.stringify({
+        id: userId,
+        ...request,
+      }),
+    );
+  }
+
+  async getUser(userId: number) {
+    return await this.redis.get(`user:${userId}`);
   }
 }

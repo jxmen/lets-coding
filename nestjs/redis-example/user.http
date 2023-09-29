@@ -1,6 +1,21 @@
+### 유저 조회
+GET http://localhost:3000/user/1
+Accept: application/json
+
+### 유저 수정 1
 PUT http://localhost:3000/user/1
 Content-Type: application/json
 
 {
-  "name": "jxmen222"
+"name": "jxmen1",
+"email": "me@jxmen.dev"
+}
+
+### 유저 수정 2
+PUT http://localhost:3000/user/2
+Content-Type: application/json
+
+{
+  "name": "jxmen2",
+  "email": "me2@jxmen.dev"
 }

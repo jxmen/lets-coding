@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Inject,
   Param,
   Put,
@@ -21,5 +22,10 @@ export class UserController {
     @Body() changeUserRequest: ChangeUserRequest,
   ): Promise<void> {
     await this.userService.changeUser(id, changeUserRequest);
+  }
+
+  @Get(':id')
+  public async getUser(@Param('id') userId: number) {
+    return await this.userService.getUser(userId);
   }
 }
