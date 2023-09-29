@@ -26,3 +26,7 @@ Content-Type: application/json
     "title": "a example post title",
     "description": "a example post description"
 }
+
+### 전체 글 조회
+GET localhost:3000/posts
+Accept: application/json

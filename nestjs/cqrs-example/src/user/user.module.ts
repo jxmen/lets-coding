@@ -9,9 +9,10 @@ import {
 } from './service/user-query.service';
 import { PrismaUserRepository } from './repository/prisma-user.repository';
 import WritePostCommandHandler from './handler/WritePostCommandHandler';
+import { PrismaModule } from 'nestjs-prisma';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, PrismaModule.forRoot()],
   controllers: [UserController],
   providers: [
     UserCommandService,
