@@ -1,21 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PrismaService } from 'nestjs-prisma';
 import UserResponse from '../dto/UserResponse';
+import UserRepository, { User } from '../user.repository';
+
+export const USER_REPOSITORY_TOKEN = 'USER_REPOSITORY';
 
 @Injectable()
 export class UserQueryService {
   constructor(
-    @Inject(PrismaService)
-    private readonly prismaService: PrismaService,
+    @Inject(USER_REPOSITORY_TOKEN)
+    private readonly userRepository: UserRepository,
   ) {}
 
   async getUsers(): Promise<UserResponse[]> {
-    const users = await this.prismaService.user.findMany({
-      select: {
-        id: true,
-        name: true,
-      },
-    });
+    const users: User[] = await this.userRepository.findAll();
 
     return users.map((user) => new UserResponse(user));
   }
