@@ -11,7 +11,7 @@ import {
 import { UserService } from './user.service';
 import ChangeUserRequest from './dto/ChangeUserRequest';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(@Inject(UserService) private readonly userService: UserService) {}
 
@@ -27,5 +27,14 @@ export class UserController {
   @Get(':id')
   public async getUser(@Param('id') userId: number) {
     return await this.userService.getUser(userId);
+  }
+
+  @Get()
+  public async getUsers() {
+    const users = await this.userService.getUsers();
+
+    return {
+      data: users,
+    };
   }
 }

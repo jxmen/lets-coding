@@ -1,9 +1,13 @@
-### 유저 조회
-GET http://localhost:3000/user/1
+### 유저 목록 조회
+GET http://localhost:3000/users
+Accept: application/json
+
+### 유저 단일 조회
+GET http://localhost:3000/users/1
 Accept: application/json
 
 ### 유저 수정 1
-PUT http://localhost:3000/user/1
+PUT http://localhost:3000/users/1
 Content-Type: application/json
 
 {
@@ -12,10 +16,19 @@ Content-Type: application/json
 }
 
 ### 유저 수정 2
-PUT http://localhost:3000/user/2
+PUT http://localhost:3000/users/2
 Content-Type: application/json
 
 {
   "name": "jxmen2",
   "email": "me2@jxmen.dev"
+}
+
+### 유저 수정 3
+PUT http://localhost:3000/users/3
+Content-Type: application/json
+
+{
+  "name": "jxmen333",
+  "email": "me3@jxmen.dev"
 }
