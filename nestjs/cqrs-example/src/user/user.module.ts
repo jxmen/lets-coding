@@ -8,6 +8,7 @@ import {
   UserQueryService,
 } from './service/user-query.service';
 import { PrismaUserRepository } from './repository/prisma-user.repository';
+import WritePostCommandHandler from './handler/WritePostCommandHandler';
 
 @Module({
   imports: [CqrsModule],
@@ -20,6 +21,7 @@ import { PrismaUserRepository } from './repository/prisma-user.repository';
       provide: USER_REPOSITORY_TOKEN,
       useClass: PrismaUserRepository,
     },
+    WritePostCommandHandler,
   ],
   exports: [
     {

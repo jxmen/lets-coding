@@ -16,4 +16,10 @@ export class UserQueryService {
 
     return users.map((user) => new UserResponse(user));
   }
+
+  async getPosts(userId: number) {
+    const posts = await this.userRepository.findAllPosts(userId);
+
+    return posts;
+  }
 }

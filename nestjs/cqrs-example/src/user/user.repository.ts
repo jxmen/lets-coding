@@ -5,4 +5,6 @@ export interface User {
 
 export default interface UserRepository {
   findAll(): Promise<User[]>;
+
+  findAllPosts(userId: number);
 }

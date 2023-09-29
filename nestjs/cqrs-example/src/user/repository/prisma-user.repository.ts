@@ -19,4 +19,12 @@ export class PrismaUserRepository implements UserRepository {
 
     return users;
   }
+
+  async findAllPosts(userId: number) {
+    const posts = await this.prismaService.post.findMany({
+      where: { userId },
+    });
+
+    return posts;
+  }
 }
