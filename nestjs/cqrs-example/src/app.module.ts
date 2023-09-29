@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from 'nestjs-prisma';
 import { UserModule } from './user/user.module';
+import { UserQueryService } from './user/service/user-query.service';
 
 @Module({
   imports: [
@@ -12,6 +13,6 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, UserQueryService],
 })
 export class AppModule {}

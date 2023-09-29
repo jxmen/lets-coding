@@ -2,6 +2,10 @@
 GET localhost:3000
 Accept: application/json
 
+### Get All Users
+GET localhost:3000/users
+Accept: application/json
+
 ### Create User
 POST localhost:3000/users
 Content-Type: application/json

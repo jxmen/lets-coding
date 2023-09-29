@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import CreateUserRequest from './dto/CreateUserRequest';
+import CreateUserRequest from '../dto/CreateUserRequest';
 import { CommandBus } from '@nestjs/cqrs';
-import CreateUserCommand from './command/CreateUserCommand';
+import CreateUserCommand from '../command/CreateUserCommand';
 
 @Injectable()
-export class UserService {
+export class UserCommandService {
   constructor(private commandBus: CommandBus) {}
 
   async createUser(createUserRequest: CreateUserRequest) {
