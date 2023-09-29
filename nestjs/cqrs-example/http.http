@@ -1,0 +1,20 @@
+### Hello World
+GET localhost:3000
+Accept: application/json
+
+### Create User
+POST localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "jxmen"
+}
+
+### Create Post
+POST localhost:3000/users/1/posts
+Content-Type: application/json
+
+{
+    "title": "a example post title",
+    "description": "a example post description"
+}
