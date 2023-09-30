@@ -1,32 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/cqrs-example/src",
+  "sourceRoot": "src",
   "compilerOptions": {
-    "deleteOutDir": true,
-    "webpack": true,
-    "tsConfigPath": "apps/cqrs-example/tsconfig.app.json"
-  },
-  "monorepo": true,
-  "root": "apps/cqrs-example",
-  "projects": {
-    "cqrs-example": {
-      "type": "application",
-      "root": "apps/cqrs-example",
-      "entryFile": "main",
-      "sourceRoot": "apps/cqrs-example/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/cqrs-example/tsconfig.app.json"
-      }
-    },
-    "test-utils": {
-      "type": "application",
-      "root": "apps/test-utils",
-      "entryFile": "main",
-      "sourceRoot": "apps/test-utils/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/test-utils/tsconfig.app.json"
-      }
-    }
+    "deleteOutDir": true
   }
 }
