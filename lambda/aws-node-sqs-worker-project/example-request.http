@@ -1,0 +1,8 @@
+POST https://uddnppr8e9.execute-api.ap-northeast-2.amazonaws.com/produce
+Accept: application/json
+
+{
+"body": {
+"msg": "hello"
+}
+}
