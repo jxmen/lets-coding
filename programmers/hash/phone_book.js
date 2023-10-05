@@ -1,3 +1,6 @@
+/**
+ * 일반적인 순회 방법. 시간 복잡도는 O(n^2)이며, 효율성 테스트에서 실패한다.
+ */
 function solution2(phone_book) {
     if (phone_book.length === 1) {
         return false;
