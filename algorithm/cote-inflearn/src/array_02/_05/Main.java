@@ -28,8 +28,8 @@ public class Main {
 			if (arr[i] == 0) {
 				answer++;
 
-				for (int j = i; j <= n; j=j+i) {
-					arr[j] = 1;
+				for (int j = i; j <= n; j=j+i) { // j의 배수들은 소수가 아님을 표시
+					arr[j] = 1; // 소수가 아님
 				}
 			}
 		}
