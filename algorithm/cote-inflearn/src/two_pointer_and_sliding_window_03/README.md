@@ -12,3 +12,7 @@
 문제 2번 서론
 
 - two pointer 알고리즘을 쓸 때는 오름차순 정렬을 먼저 해야한다!!
+
+### sliding window
+
+![](.README_images/678025cb.png)
