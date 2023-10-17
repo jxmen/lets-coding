@@ -1,6 +1,5 @@
 package array_02._06;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -25,7 +24,6 @@ public class Main {
 			}
 		}
 	}
-
 
 	private boolean isSosu(int num) {
 		for (int i = 2; i < num; i++) {
