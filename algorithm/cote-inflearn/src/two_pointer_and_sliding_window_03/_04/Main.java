@@ -15,7 +15,7 @@ public class Main {
 			arr[i] = s.nextInt();
 		}
 
-		System.out.print(T.solution(m, arr));
+		System.out.print(T.solution3(m, arr));
 	}
 
 	/**
@@ -51,6 +51,8 @@ public class Main {
 	}
 
 	/**
+	 * TODO: 해설 강의 보면서 이 코드 이해하기
+	 *
 	 * 강의에서 제공하는 정답
 	 */
 	private int solution3(int m, int[] arr) {
