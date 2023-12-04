@@ -1,7 +1,5 @@
 package dfs_and_bfs_begin_07._05;
 
-import java.util.Scanner;
-
 class Node {
 	public int value;
 	public Node lt;
