@@ -15,8 +15,10 @@ class Quack implements QuackBehavior {
 export default class MallardDuck extends Duck {
 
     constructor() {
-        super();
-        super.quackBehavior = new Quack();
-        super.flyBehavior = new FlyWithWings();
+        super(new Quack(), new FlyWithWings());
+    }
+
+    public setFlyBehavior(flyNoWay: FlyBehavior): void {
+        this.flyBehavior = flyNoWay;
     }
 };

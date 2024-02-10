@@ -7,11 +7,12 @@ export interface FlyBehavior {
 }
 
 export default abstract class Duck {
-    quackBehavior: QuackBehavior;
-    flyBehavior: FlyBehavior;
+    public quackBehavior: QuackBehavior;
+    public flyBehavior: FlyBehavior;
 
-
-    public constructor() {
+    constructor(quackBehavior: QuackBehavior, flyBehavior: FlyBehavior) {
+        this.quackBehavior = quackBehavior;
+        this.flyBehavior = flyBehavior;
     }
 
     public performQuack(): void {
