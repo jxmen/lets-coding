@@ -14,6 +14,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation(kotlin("stdlib-jdk8"))
+
+    testImplementation("org.assertj:assertj-core:3.25.3")
 }
 
 tasks.test {
