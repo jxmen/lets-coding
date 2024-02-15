@@ -1,17 +1,20 @@
 package org.example.random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class WeightedRandomNPicker {
+	private static final Random random = new Random();
+
+	private WeightedRandomNPicker() {
+		throw new IllegalStateException("Utility class");
+	}
 
 	public static <T> List<T> pickNRandomWithWeight(T[] elements, double[] weights, int n) {
-
-		double total = 0.0;
-		for (double weight : weights) {
-			total += weight;
-		}
+		double total = Arrays.stream(weights)
+				.reduce(0.0, Double::sum);
 
 		for (int i = 0; i < weights.length; i++) {
 			weights[i] /= total;
@@ -31,7 +34,6 @@ public class WeightedRandomNPicker {
 			totalWeight += weight;
 		}
 
-		Random random = new Random();
 		List<T> pickedElements = new ArrayList<>();
 
 		for (int i = 0; i < n; i++) {
