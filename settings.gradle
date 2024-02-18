@@ -1,9 +1,0 @@
-include 'head-first-design-patterns:ch3-decorator'
-findProject(':head-first-design-patterns:ch3-decorator')?.name = 'ch3-decorator'
-
-include 'head-first-design-patterns:ch4-factory'
-findProject(':head-first-design-patterns:ch4-factory')?.name = 'ch4-factory'
-
-include 'head-first-design-patterns:ch5-singleton'
-findProject(':head-first-design-patterns:ch5-singleton')?.name = 'ch5-singleton'
-
