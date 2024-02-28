@@ -32,9 +32,9 @@ class ApplicationTests {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.message").value("hello"))
 				.andDo(
-						MockMvcRestDocumentationWrapper.document("get-advertisement-transmission",
+						MockMvcRestDocumentationWrapper.document("get-hello",
 								responseFields(
-										fieldWithPath("message").description("it must be hello")
+										fieldWithPath("message").description("it must be hello.")
 								)
 						)
 				);

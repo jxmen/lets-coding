@@ -1,7 +1,3 @@
-repositories {
-    mavenCentral()
-}
-
 plugins {
     java
     id("org.springframework.boot") version "3.2.3"
@@ -79,4 +75,10 @@ tasks.bootJar {
     from("build/api-spec") {
         into("BOOT-INF/classes/static/swagger")
     }
+}
+
+openapi3{
+    setServer("http://localhost:8080")
+
+    format = "yaml"
 }
