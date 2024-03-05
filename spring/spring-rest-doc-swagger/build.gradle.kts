@@ -48,37 +48,26 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-val snippetsDir by extra { file("build/generated-snippets") }
-
 tasks.test {
-    outputs.dir(snippetsDir)
-
     finalizedBy("openapi3")
+    finalizedBy("copyOasToSwagger")
 }
 
-tasks.asciidoctor {
-    inputs.dir(snippetsDir)
-    dependsOn(tasks.test)
-}
-
-tasks.bootJar {
-    archiveFileName.set("app.jar")
-
-    dependsOn(tasks.test)
-
-    from("${tasks.asciidoctor.get().outputDir}") {
-        into("BOOT-INF/classes/static/docs")
-    }
-    from("swagger-ui") {
-        into("BOOT-INF/classes/static/swagger")
-    }
-    from("build/api-spec") {
-        into("BOOT-INF/classes/static/swagger")
-    }
-}
-
-openapi3{
+openapi3 {
     setServer("http://localhost:8080")
 
     format = "yaml"
+}
+
+tasks.register<Copy>("copyOasToSwagger") {
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
+    description = "openapi 파일 정적 경로에 복사"
+
+    delete("src/main/resources/static/swagger-ui/openapi3.yaml") // 기존 OAS 파일 삭제
+
+    from(layout.buildDirectory.file("api-spec/openapi3.yaml")) // 복제할 OAS 파일 지정
+
+    into("src/main/resources/static/swagger-ui/.") // 타겟 디렉터리로 파일 복제
+
+    dependsOn("openapi3") // openapi3 Task가 먼저 실행되도록 설정
 }
