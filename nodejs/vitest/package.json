@@ -1,0 +1,14 @@
+{
+  "name": "vitest",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "vitest": "^1.6.0"
+  }
+}
