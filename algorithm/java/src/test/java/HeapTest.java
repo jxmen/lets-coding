@@ -3,7 +3,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -92,18 +91,18 @@ class HeapTest {
 		assertThat(minHeapStreamList).containsExactly(1, 3, 2, 4, 5);
 
 		// sorted 사용시에도 정렬됨. 단 시간복잡도는 O(nlogn)
-		List<Integer> minHeapSorted2 = minHeap.stream()
+		List<Integer> minHeapStreamSorted = minHeap.stream()
 				.mapToInt(Integer::intValue)
 				.boxed()
 				.sorted() // O(nlogn)
 				.toList();
-		assertThat(minHeapSorted2).containsExactly(1, 2, 3, 4, 5);
+		assertThat(minHeapStreamSorted).containsExactly(1, 2, 3, 4, 5);
 
 		// poll 사용 시 순서 보장됨과 동시에 시간 복잡도 O(1) 소요 (전체는 O(N))
-		List<Integer> minHeapSorted = new ArrayList<>();
+		List<Integer> minHeapSortedWithPoll = new ArrayList<>();
 		while (!minHeap.isEmpty()) {
-			minHeapSorted.add(minHeap.poll()); // O(1)
+			minHeapSortedWithPoll.add(minHeap.poll()); // O(1)
 		}
-		assertThat(minHeapSorted).containsExactly(1, 2, 3, 4, 5);
+		assertThat(minHeapSortedWithPoll).containsExactly(1, 2, 3, 4, 5);
 	}
 }
