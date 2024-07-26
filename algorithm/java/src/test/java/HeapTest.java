@@ -35,4 +35,24 @@ class HeapTest {
 			assert Objects.equals(maxHeap.poll(), it);
 		});
 	}
+
+	@Test
+	void taskPriorityTest() {
+		PriorityQueue<Task> heap = new PriorityQueue<>();
+		Task task1 = new Task(1, "task1");
+		Task task2 = new Task(2, "task2");
+		Task task3 = new Task(3, "task3");
+		Task task4 = new Task(4, "task4");
+		Task task5 = new Task(5, "task5");
+		heap.offer(task3);
+		heap.offer(task1);
+		heap.offer(task2);
+		heap.offer(task4);
+		heap.offer(task5);
+
+		List.of(task5, task4, task3, task2, task1).forEach(task -> {
+			System.out.println(task.name + " (우선순위: " + task.priority + ")");
+			assert Objects.equals(heap.poll(), task);
+		});
+	}
 }
