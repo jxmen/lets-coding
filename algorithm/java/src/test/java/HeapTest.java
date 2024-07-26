@@ -1,8 +1,13 @@
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.PriorityQueue;
+import java.util.stream.IntStream;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class HeapTest {
 
@@ -17,7 +22,7 @@ class HeapTest {
 		minHeap.offer(5);
 
 		List.of(1, 2, 3, 4, 5).forEach(it -> {
-			assert Objects.equals(minHeap.poll(), it);
+			assertThat(minHeap.poll()).isEqualTo(it);
 		});
 	}
 
@@ -32,7 +37,7 @@ class HeapTest {
 		maxHeap.offer(5);
 
 		List.of(5, 4, 3, 2, 1).forEach(it -> {
-			assert Objects.equals(maxHeap.poll(), it);
+			assertThat(maxHeap.poll()).isEqualTo(it);
 		});
 	}
 
@@ -52,7 +57,24 @@ class HeapTest {
 
 		List.of(task5, task4, task3, task2, task1).forEach(task -> {
 			System.out.println(task.name + " (우선순위: " + task.priority + ")");
-			assert Objects.equals(heap.poll(), task);
+			assertThat(heap.poll()).isEqualTo(task);
 		});
+	}
+
+	@Test
+	@DisplayName("힙으로 K번째로 큰 수 찾기")
+	void kthValueTest() {
+		int k = 3;
+		int[] arr = {1, 5, 2, 9, 3, 7, 4, 6, 8};
+		PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+		for (int num: arr) {
+			minHeap.offer(num);
+			if (minHeap.size() > k) {
+				minHeap.poll();
+			}
+		}
+
+		assertThat(minHeap.peek()).isEqualTo(7);
 	}
 }
