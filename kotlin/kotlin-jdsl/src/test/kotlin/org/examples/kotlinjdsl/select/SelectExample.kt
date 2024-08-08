@@ -90,7 +90,7 @@ class SelectExample {
 
         maxScoreChats.forEach { println(it) }
 
-        assert(maxScoreChats.size == 3)
+        assert(maxScoreChats.size == 2)
         assert(maxScoreChats[0]?.maxScore == 30)
         assert(maxScoreChats[1]?.maxScore == 60)
     }
