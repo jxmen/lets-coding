@@ -1,28 +1,32 @@
 package org.examples.kotlinjdsl.select
 
+import com.linecorp.kotlinjdsl.dsl.jpql.jpql
+import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderContext
+import com.linecorp.kotlinjdsl.render.jpql.JpqlRenderer
+import jakarta.persistence.EntityManager
 import org.examples.kotlinjdsl.entity.Chat
 import org.examples.kotlinjdsl.entity.Member
 import org.examples.kotlinjdsl.entity.Subject
+import org.examples.kotlinjdsl.entity.SubjectCategory
 import org.examples.kotlinjdsl.repository.ChatRepository
 import org.examples.kotlinjdsl.repository.MemberRepository
 import org.examples.kotlinjdsl.repository.SubjectRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestConstructor
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional
 @SpringBootTest
-class SelectExample {
-    @Autowired
-    lateinit var chatRepository: ChatRepository
-
-    @Autowired
-    lateinit var memberRepository: MemberRepository
-
-    @Autowired
-    lateinit var subjectRepository: SubjectRepository
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class SelectExample(
+    private val chatRepository: ChatRepository,
+    private val memberRepository: MemberRepository,
+    private val subjectRepository: SubjectRepository,
+    private val entityManger: EntityManager,
+) {
+    val context = JpqlRenderContext()
 
     lateinit var subject1: Subject
     lateinit var subject2: Subject
@@ -97,12 +101,12 @@ class SelectExample {
 
     @Test
     fun `본인 최대 점수 포함한 전체 주제 조회`() {
-        val findAll =
-            subjectRepository.findAll {
+        val query =
+            jpql {
                 selectNew<SubjectDTO>(
                     path(Subject::id),
                     path(Subject::title),
-                    path(Subject::question),
+                    path(Subject::category),
                     max(path(Chat::score)),
                 ).from(
                     entity(Subject::class),
@@ -115,8 +119,22 @@ class SelectExample {
                     path(Subject::id),
                 )
             }
+        val renderer = JpqlRenderer()
 
-        findAll.forEach { println(it) }
+        val rendered = renderer.render(query, context)
+        val resultList = entityManger
+            .createQuery(rendered.query)
+            .apply {
+                rendered.params.forEach { (name, value) ->
+                    setParameter(name, value)
+                }
+            }.resultList as List<SubjectDTO>
+
+        assert(resultList.size == 2)
+        assert(resultList[0].title == "title1")
+        assert(resultList[0].maxScore == 30)
+        assert(resultList[1].title == "title2")
+        assert(resultList[1].maxScore == 60)
     }
 }
 
@@ -130,6 +148,6 @@ data class MemberChatMaxScoreInfo(
 data class SubjectDTO(
     val id: Long,
     val title: String,
-    val question: String,
+    val category: SubjectCategory,
     val maxScore: Int?,
 )
