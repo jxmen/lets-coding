@@ -22,28 +22,33 @@ class AiController(
     fun hello(): String = "Hello, World!"
 
     @GetMapping("/ai/anthropic/chat")
-    fun chat(): String = anthropicChatModel.call("Hello, AI!")
+    fun chat(
+        @RequestParam(
+            value = "message",
+            defaultValue = "농담 좀 해봐",
+        ) message: String?,
+    ): String = anthropicChatModel.call(message)
 
     @GetMapping("/ai/anthropic/chat/stream")
     fun generateStream(
         @RequestParam(
             value = "message",
-            defaultValue = "Tell me a joke",
+            defaultValue = "농담 좀 해봐",
         ) message: String?,
     ): Flux<ChatResponse> {
         val prompt = Prompt(UserMessage(message))
-        var message = ""
+        val answer = StringBuilder()
 
         return anthropicChatModel
             .stream(prompt)
             .doOnNext {
                 it.results.forEach {
-                    logger.info("Response: ${it.output.content}")
-                    message += it.output.content
+                    logger.info("Content: ${it.output.content}")
+                    answer.append(it.output.content)
                 }
             }.doOnComplete {
                 logger.info("=== Stream completed")
-                logger.info("Message: $message")
+                logger.info("answer: $answer")
             }
     }
 }
