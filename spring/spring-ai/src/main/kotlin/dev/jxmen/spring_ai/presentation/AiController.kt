@@ -1,5 +1,6 @@
-package dev.jxmen.spring_ai.controller
+package dev.jxmen.spring_ai.presentation
 
+import dev.jxmen.spring_ai.domain.answer.AnswerRepository
 import org.slf4j.LoggerFactory
 import org.springframework.ai.anthropic.AnthropicChatModel
 import org.springframework.ai.chat.messages.UserMessage
@@ -15,6 +16,7 @@ import reactor.core.publisher.Flux
 @CrossOrigin(origins = ["http://localhost:3000"])
 class AiController(
     private val anthropicChatModel: AnthropicChatModel,
+    private val answerRepository: AnswerRepository,
 ) {
     private val logger = LoggerFactory.getLogger(AiController::class.java)
 
@@ -27,7 +29,12 @@ class AiController(
             value = "message",
             defaultValue = "농담 좀 해봐",
         ) message: String?,
-    ): String = anthropicChatModel.call(message)
+    ): String {
+        val answer = anthropicChatModel.call(message)
+        answerRepository.save(answer)
+
+        return answer
+    }
 
     @GetMapping("/ai/anthropic/chat/stream")
     fun generateStream(
@@ -48,7 +55,8 @@ class AiController(
                 }
             }.doOnComplete {
                 logger.info("=== Stream completed")
-                logger.info("answer: $answer")
+                val created = answerRepository.save(answer.toString())
+                logger.info("=== Answer saved: $created")
             }
     }
 }
