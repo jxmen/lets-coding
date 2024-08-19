@@ -1,6 +1,6 @@
 package dev.jxmen.spring_ai.presentation
 
-import dev.jxmen.spring_ai.domain.answer.AnswerRepository
+import dev.jxmen.spring_ai.domain.chat.ChatRepository
 import org.slf4j.LoggerFactory
 import org.springframework.ai.anthropic.AnthropicChatModel
 import org.springframework.ai.chat.messages.UserMessage
@@ -16,7 +16,7 @@ import reactor.core.publisher.Flux
 @CrossOrigin(origins = ["http://localhost:3000"])
 class AiController(
     private val anthropicChatModel: AnthropicChatModel,
-    private val answerRepository: AnswerRepository,
+    private val chatRepository: ChatRepository,
 ) {
     private val logger = LoggerFactory.getLogger(AiController::class.java)
 
@@ -28,10 +28,10 @@ class AiController(
         @RequestParam(
             value = "message",
             defaultValue = "농담 좀 해봐",
-        ) message: String?,
+        ) message: String,
     ): String {
         val answer = anthropicChatModel.call(message)
-        answerRepository.save(answer)
+        chatRepository.save(message, answer)
 
         return answer
     }
@@ -41,7 +41,7 @@ class AiController(
         @RequestParam(
             value = "message",
             defaultValue = "농담 좀 해봐",
-        ) message: String?,
+        ) message: String,
     ): Flux<ChatResponse> {
         val prompt = Prompt(UserMessage(message))
         val answer = StringBuilder()
@@ -50,13 +50,12 @@ class AiController(
             .stream(prompt)
             .doOnNext {
                 it.results.forEach {
-                    logger.info("Content: ${it.output.content}")
                     answer.append(it.output.content)
                 }
             }.doOnComplete {
                 logger.info("=== Stream completed")
-                val created = answerRepository.save(answer.toString())
-                logger.info("=== Answer saved: $created")
+                val created = chatRepository.save(message, answer.toString())
+                logger.info("=== Answer saved: ${created.answer}")
             }
     }
 }
