@@ -21,5 +21,9 @@ class InMemoryChatRepository : ChatRepository {
     override fun findAll(): List<Chat> {
         return chats
     }
+
+    override fun deleteAll() {
+        chats.clear()
+    }
 }
 

@@ -2,8 +2,8 @@ package dev.jxmen.spring_ai.presentation
 
 import dev.jxmen.spring_ai.domain.chat.ChatRepository
 import org.slf4j.LoggerFactory
-import org.springframework.ai.anthropic.AnthropicChatModel
 import org.springframework.ai.chat.messages.UserMessage
+import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.chat.model.ChatResponse
 import org.springframework.ai.chat.prompt.Prompt
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -15,7 +15,7 @@ import reactor.core.publisher.Flux
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"])
 class AiController(
-    private val anthropicChatModel: AnthropicChatModel,
+    private val chatModel: ChatModel,
     private val chatRepository: ChatRepository,
 ) {
     private val logger = LoggerFactory.getLogger(AiController::class.java)
@@ -30,7 +30,7 @@ class AiController(
             defaultValue = "농담 좀 해봐",
         ) message: String,
     ): String {
-        val answer = anthropicChatModel.call(message)
+        val answer = chatModel.call(message)
         chatRepository.save(message, answer)
 
         return answer
@@ -46,7 +46,7 @@ class AiController(
         val prompt = Prompt(UserMessage(message))
         val answer = StringBuilder()
 
-        return anthropicChatModel
+        return chatModel
             .stream(prompt)
             .doOnNext {
                 it.results.forEach {

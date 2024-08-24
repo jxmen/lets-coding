@@ -4,4 +4,5 @@ interface ChatRepository {
     fun save(message: String, answer: String): Chat
 
     fun findAll(): List<Chat>
+    fun deleteAll()
 }
