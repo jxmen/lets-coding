@@ -85,6 +85,8 @@ synchornized는 하나의 프로세스에서만 유효합니다. 즉, 여러 대
 
 ### 비관적 락 (Pessimistic Lock)
 
+> 데이터에 실제로 락을 걸어 접근하지 못하도록 하는 방법
+
 Spring에서 제공하는 `@Lock` 어노테이션을 사용하여 비관적 락을 사용할 수 있습니다.
 
 ```Java
@@ -126,3 +128,26 @@ public class Stock {
 버전이 변경되었다면 예외가 발생하므로 재시도 로직을 넣어주어야 합니다.
 
 ### 네임드 락 (Named Lock)
+
+> 이름을 가진 메타데이터 락
+
+- 이름을 가진 락 획득 후, 해제할 때 까지 다른 세션에서 접근할 수 없음
+- 주의사항: **트랜잭션 종료 시 락이 자동으로 해제되지 않음.** 반드시 별도로 해제해주어야 함.
+- MySQL은 get-lock 명령어를 통해 락 획득, release-lock 명령어를 통해 락 해제
+- 커넥션 풀 부족 현상을 방지하기 위해, 실무에서는 데이터 소스를 분리해서 사용 권장
+- 주로 `분산 락` 구현에 사용되며, 낙관적 락과 달리 timeout을 손쉽게 구현할 수 있다.
+
+```Java
+// NOTE: 실무에서 사용 시 데이터 소스를 분리해서 사용하는 것을 권장
+public interface LockRepository extends JpaRepository<Stock, Long> {
+	@Query(value = "select get_lock(:key, 3000)", nativeQuery = true)
+	void getLock(String key);
+
+	@Query(value = "select release_lock(:key)", nativeQuery = true)
+	void releaseLock(String key);
+}
+```
+
+### Redis를 활용하는 방법 - Lettuce, Redisson
+
+
