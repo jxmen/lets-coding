@@ -1,9 +1,12 @@
 package org.example.api.service;
 
+import org.example.api.repository.CouponCountRepository;
 import org.example.api.repository.CouponRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -19,6 +22,15 @@ class ApplyServiceTest {
 
 	@Autowired
 	private CouponRepository couponRepository;
+
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
+
+	@BeforeEach
+	void setUp() {
+		// 쿠폰 개수 초기화
+		redisTemplate.delete(CouponCountRepository.COUNT_KEY);
+	}
 
 	@Test
 	void 한번만_응모() {

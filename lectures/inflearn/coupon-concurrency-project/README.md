@@ -33,4 +33,4 @@ public void apply(Long userId) {
 ### Redis를 활용하여 동시성 문제 해결하기
 
 `incr`이란 명령어가 존재
-- key에 대한 value를 1씩 증가
+- key에 대한 value를 1씩 증가하고, 해당 값을 반환한다.
