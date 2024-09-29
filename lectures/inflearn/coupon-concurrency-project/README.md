@@ -24,7 +24,7 @@ public void apply(Long userId) {
     }
 
     couponRepository.save(new Coupon(userId));
-}
+}G
 ```
 
 - save하여 쿠폰의 개수가 실제로 늘어나기 전에 다른 스레드에서 count를 읽는다면 더 많은 쿠폰이 발급될 수도 있다.
@@ -34,3 +34,19 @@ public void apply(Long userId) {
 
 `incr`이란 명령어가 존재
 - key에 대한 value를 1씩 증가하고, 해당 값을 반환한다.
+
+### 쿠폰 개수 조회를 Redis로 변경한 이후에도 발생할 수 있는 문제점
+
+```Java
+public void apply(Long userId) {
+    long count = couponCountRepository.count();
+    if (count > MAX_COUPON_COUNT) {
+        return;
+    }
+
+    // write가 다량으로 들어온다면 문제 발생!!!
+    couponRepository.save(new Coupon(userId));
+}
+```
+
+쿠폰을 발급하는 write 요청 자체도 단기간에 많이 몰린다면, RDB에 많은 부하가 가게 된다. kafka를 통해 해결하는 방법을 알아본다. kafka를 사용하면 처리량을 조절할 수 있다.
