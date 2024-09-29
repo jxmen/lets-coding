@@ -1,5 +1,6 @@
 package org.example.api.service;
 
+import org.example.api.repository.AppliedUserRepository;
 import org.example.api.repository.CouponCountRepository;
 import org.example.api.repository.CouponRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +31,9 @@ class ApplyServiceTest {
 	void setUp() {
 		// 쿠폰 개수 초기화
 		redisTemplate.delete(CouponCountRepository.COUNT_KEY);
+
+		// 쿠폰 발급 신청한 유저 초기화
+		redisTemplate.delete(AppliedUserRepository.APPLIED_USERS_KEY);
 	}
 
 	@Test
@@ -64,5 +68,29 @@ class ApplyServiceTest {
 
 		long count = couponRepository.count();
 		assertThat(count).isEqualTo(100);
+	}
+
+	@Test
+	void 유저_한명당_한개의_쿠폰만_발급되어야_한다() throws InterruptedException {
+		int threadCount = 1000;
+		ExecutorService executorService = Executors.newFixedThreadPool(32);
+		CountDownLatch latch = new CountDownLatch(threadCount);
+
+		for (int i = 0; i < threadCount; i++) {
+			executorService.submit(() -> {
+				try {
+					applyService.apply(1L); // 1번 유저로 고정
+				} finally {
+					latch.countDown();
+				}
+			});
+		}
+
+		latch.await();
+
+		Thread.sleep(10000);
+
+		long count = couponRepository.count();
+		assertThat(count).isEqualTo(1);
 	}
 }
