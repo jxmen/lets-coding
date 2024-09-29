@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class StockServiceTest {
 
 	@Autowired
-	private StockService stockService;
+	private PessimisticLockStockService stockService;
 
 	@Autowired
 	private StockRepository stockRepository;
@@ -54,15 +54,13 @@ class StockServiceTest {
 		CountDownLatch latch = new CountDownLatch(threadCount);
 
 		for (int i = 0; i < threadCount; i++) {
-
-				executorService.submit(() -> {
-					try {
-						stockService.decrease(1L, 1L);
-					} finally {
-						latch.countDown();
-					}
-				});
-
+			executorService.submit(() -> {
+				try {
+					stockService.decrease(1L, 1L);
+				} finally {
+					latch.countDown();
+				}
+			});
 		}
 
 		latch.await();

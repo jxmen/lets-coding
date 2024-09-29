@@ -79,8 +79,34 @@ synchornized는 하나의 프로세스에서만 유효합니다. 즉, 여러 대
 
 ### MySQL에서 제공하는 방법으로 동시성 문제 해결하기
 
-(추가 예정)
-
 - 비관적 락
 - 낙관적 락 
 - 네임드 락
+
+### 비관적 락 (Pessimistic Lock)
+
+Spring에서 제공하는 `@Lock` 어노테이션을 사용하여 비관적 락을 사용할 수 있습니다.
+
+```Java
+public interface StockRepository extends JpaRepository<Stock, Long> {
+
+	@Lock(LockModeType.PESSIMISTIC_WRITE) // 비관적 락
+	@Query("SELECT s FROM Stock s WHERE s.id = :id")
+	Stock findByIdWithPessimisticLock(Long id);
+}
+```
+
+실제 쿼리 실행시에는, 데이터 조회 쿼리에 `FOR UPDATE` 구문이 추가됩니다.
+
+```SQL
+select s1_0.id,s1_0.product_id,s1_0.quantity 
+from stock s1_0 
+where s1_0.id=? 
+for update
+```
+
+### 낙관적 락 (Optimistic Lock)
+
+### 네임드 락 (Named Lock)
+
+
