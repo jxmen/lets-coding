@@ -150,4 +150,13 @@ public interface LockRepository extends JpaRepository<Stock, Long> {
 
 ### Redis를 활용하는 방법 - Lettuce, Redisson
 
+Lettuce
+- setnx 명령어 사용 (set if not exist)
+- spin lock 방식으로 구현된다.
+  - 락을 획득할 수 있는지 계속해서 retry를 시도한다.
+- 구현이 간단하나 레디스에 부하를 줄 수 있는 단점이 있다.
+
+Redisson
+- pub-sub 기반으로 채널을 만들어서, 락 획득/해제 여부를 채널에 알리는 방식이다.
+
 
