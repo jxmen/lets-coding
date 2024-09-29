@@ -107,6 +107,22 @@ for update
 
 ### 낙관적 락 (Optimistic Lock)
 
+> 실제로 락을 쓰지 않고 버전을 사용하여 데이터 정합성을 맞추는 방법.
+
+별도의 예외 처리 로직을 추가해주어야 한다.
+
+Jpa에서는 별도의 버전 필드를 사용하고, `@Version` 어노테이션을 사용하여 버전을 관리할 수 있습니다.
+
+```Java
+
+@Entity
+public class Stock {
+
+    @Version // javax.persistence
+    private Long version;
+}
+```
+
+버전이 변경되었다면 예외가 발생하므로 재시도 로직을 넣어주어야 합니다.
+
 ### 네임드 락 (Named Lock)
-
-

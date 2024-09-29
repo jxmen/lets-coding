@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 
 @Entity
 public class Stock {
@@ -14,6 +15,9 @@ public class Stock {
 
 	private Long productId;
 	private Long quantity;
+
+	@Version // NOTE: Spring이 아닌 javax.persistence 패키지의 어노테이션을 사용해야 함
+	private Long version;
 
 	public Stock() {
 	}
