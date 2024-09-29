@@ -13,3 +13,24 @@
 - 101개 이상이 지급되면 안된다.
 - 순간적으로 몰리는 트래픽을 버틸 수 있어야합니다.
 ```
+
+### 처음 코드의 문제점
+
+```Java
+public void apply(Long userId) {
+    long count = couponRepository.count();
+    if (count > MAX_COUPON_COUNT) {
+        return;
+    }
+
+    couponRepository.save(new Coupon(userId));
+}
+```
+
+- save하여 쿠폰의 개수가 실제로 늘어나기 전에 다른 스레드에서 count를 읽는다면 더 많은 쿠폰이 발급될 수도 있다.
+- count부분에 락을 걸어야 하는데, 그렇다고 저장까지 락을 걸면 불필요한 대기 시간이 발생한다.
+
+### Redis를 활용하여 동시성 문제 해결하기
+
+`incr`이란 명령어가 존재
+- key에 대한 value를 1씩 증가
